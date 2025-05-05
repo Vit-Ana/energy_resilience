@@ -8,7 +8,8 @@ This project evaluates the viability of building solar power plants in Ukraine, 
 **a. ACLED Warfare Events**
 - Website: ACLED Ukraine Conflict Monitor
 - Data Description: Contains attacks event data with precise geographic coordinates and timestamps.
-- Manual Download: Download the .csv file by clicking "Download file [Ukraine & the Black Sea (18 April 2025)]".
+- Manual Download: Download the .xls file by clicking "Download file" `Ukraine & the Black Sea (18 April 2025)`.
+- Converted to CSV (used in scripts): `Ukraine_Infrastructure_Tags_2025-03-26.csv`
 
 **b. Ukraine Administrative Boundaries**
 - File Type: geopackage (.gpkg).
@@ -20,36 +21,36 @@ This project evaluates the viability of building solar power plants in Ukraine, 
 Loads Ukraine map as a geopackage.
 
 ### Script 2: ```02_ukr_map.py```
-Converts the attack coordinates into point geometries.
+Converts the attack coordinates into point geometries.\
 Projects all data to a metric coordinate system for distance-based buffer calculations.
 
 ### Script 3: ```03_attacks_buffers.py```
-Creates a 20km buffer around all attack locations.
-Creates a second ring buffer between 20km and 40km around attacks.
-Subtracts the risky zones from the national territory to isolate “relatively safe” land.
-All area-based computations use projected coordinates: EPSG:32636.
+Creates a 20km buffer around all attack locations.\
+Creates a second ring buffer between 20km and 40km around attacks.\
+Subtracts the risky zones from the national territory to isolate “relatively safe” land.\
+All area-based computations use projected coordinates: EPSG:32636.\
 Uploading the saved geopackage file to QGIS.
 
 **Map of Attacks (Using QGIS)**
 ![Map of Attacks](map_buffers.png)
 
 ### Script 4: ```04_capacity_SPP_and_WPP.py```
-Calculates the area of the safe territory.
-Applies a capacity factor (0.1) to estimate usable area for solar farms and 0.35 for wind farms.
+Calculates the area of the safe territory.\
+Applies a capacity factor (0.1) to estimate usable area for solar farms and 0.35 for wind farms.\
 Estimates annual energy production.
 
 ### Script 5: ```05_area_SPP_WPP.py```
-Computes potential installed solar capacity to substitute Zaporizhzhia NPP (6000MW) capacity that was occupied by the Russian forces.
-Applies a capacity factor (0.1) to estimate usable area for solar farms and 0.35 for wind farms.
+Computes potential installed solar capacity to substitute Zaporizhzhia NPP (6000MW) capacity that was occupied by the Russian forces.\
+Applies a capacity factor (0.1) to estimate usable area for solar farms and 0.35 for wind farms.\
 Calculates the percentage of the remaining safe area needed for solar and wind power plants installation. 
 
 ### Script 6: ```06_npv+insurance.py```
-Estimates the Net Present Value (NPV) of installing domestic and industrial solar power plants in the safe zone.
+Estimates the Net Present Value (NPV) of installing domestic and industrial solar power plants in the safe zone.\
 Estimates a war-related risk insurance premium based on exposed vs. safe land.
 
 ### Script 7: ```07_financial_model.py```
-Builds a simplified financial model to estimate the NPV of solar power plant deployment in safe zones.
-Incorporates assumptions for CAPEX, OPEX, electricity prices, and a discount rate.
+Builds a simplified financial model to estimate the NPV of solar power plant deployment in safe zones.\
+Incorporates assumptions for CAPEX, OPEX, electricity prices, and a discount rate.\
 Includes a comparative analysis against the Khmelnytska Nuclear Power Plant (2000 MW) to contextualize the economic feasibility.
 
 ## 4. Additional Files

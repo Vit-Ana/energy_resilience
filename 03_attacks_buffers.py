@@ -12,10 +12,7 @@ import matplotlib.pyplot as plt
 import os
 
 #reading downloaded from https://acleddata.com/ukraine-conflict-monitor/#dash
-df = pd.read_excel('Ukraine_Infrastructure_Tags_2025-03-26.xlsx')
-df.isnull
-#saving as a csv file
-df.to_csv('Ukraine_Infrastructure_Tags_2025-03-26.csv', index=False)
+df = pd.read_csv('Ukraine_Infrastructure_Tags_2025-03-26.csv')
 # dropping locations that are occupied by the Russian forces
 df = df.drop(df[df['LOCATION'].str.contains('BLACK SEA', case=False, na=False)].index)
 df = df.drop(df[df['ADMIN1'].str.contains('DONETSK', case=False, na=False)].index)
