@@ -17,6 +17,7 @@ def discounted_cash_flow(revenue, opex, years, discount_rate, start_year):
         for y in range(years)
     )
 
+# --- NPV equation ---
 def calculate_npv(capex, revenue, opex, years, discount_rate, start_year,
                   insurance=0, risk_probability=0):
     total_cost = capex + insurance * capex
@@ -24,6 +25,7 @@ def calculate_npv(capex, revenue, opex, years, discount_rate, start_year,
     expected_loss = risk_probability * dcf  # risk of full loss
     return dcf - total_cost - expected_loss
 
+# --- Levelized Cost of Energy ---
 def lcoe(capex, opex, energy_generated):
     return (capex + opex * len(energy_generated)) / sum(energy_generated)
 

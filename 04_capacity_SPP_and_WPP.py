@@ -10,6 +10,7 @@ Created on Mon Apr 21 20:14:52 2025
 import geopandas as gpd
 
 #%%
+#reading the data files of the territories for estimate power plant capacity  
 out_file = "map_of_attacks.gpkg"
 target_crs = "EPSG:32636"
 buffer_risky = gpd.read_file(out_file, layer="buffer_risky").to_crs(target_crs)
@@ -32,10 +33,12 @@ wind_capacity_per_turbine_MW = 3  # Wind capacity per turbine in MW
 wind_capacity_factor = 0.25   # Wind capacity factor
 turbine_exclusion_radius_m = 500  # Radius of exclusion for wind turbines in meters
 
+#function for solar capacity
 def estimate_solar_capacity(area_sqm):
     available_area_sqm = area_sqm * available_land_solar  # Available land area for solar
     return available_area_sqm / solar_area_per_MW_sqm * 0.001  # Convert to GW
 
+#function for computing wind capacity
 def estimate_wind_capacity(area_sqm):
     available_area_sqm = area_sqm * available_land_wind  # Available land area for wind
     spacing = 5 * turbine_exclusion_radius_m  # Spacing between turbines
@@ -47,15 +50,15 @@ def estimate_annual_production(capacity_gw, capacity_factor):
     return capacity_gw * capacity_factor * 365 * 24  # Convert to GWh
 
 #%%
-# Dissolve geometries to make a single polygon for subtraction
+# dissolving geometries to make a single polygon for subtraction
 risky_union = buffer_risky.unary_union
 country_union = country_area.unary_union
 
-# Create GeoSeries for consistent area calculation
+# creating GeoSeries for consistent area calculation
 risky_zone = gpd.GeoSeries([risky_union], crs=country_area.crs)
 country_zone = gpd.GeoSeries([country_union], crs=country_area.crs)
 
-# Calculate areas
+# calculating areas
 country_area_m2 = country_zone.area.sum()  # Total country area in square meters
 risky_area_m2 = risky_zone.area.sum()  # Total risky area in square meters
 safe_area_m2 = country_area_m2 - risky_area_m2  # Safe area in square meters
@@ -63,7 +66,7 @@ safe_area_m2 = country_area_m2 - risky_area_m2  # Safe area in square meters
 print(f"Total installable safe area: {safe_area_m2 / 1e6:.2f} km²")
 
 #%%
-# Estimate potential capacities and production in the safe area
+# estimating potential capacities and production in the safe area
 solar_safe = estimate_solar_capacity(safe_area_m2)  # Pass the numeric area value
 wind_turbines_safe, wind_safe = estimate_wind_capacity(safe_area_m2)  # Pass the numeric area value
 annual_solar_safe = estimate_annual_production(solar_safe, solar_capacity_factor)
